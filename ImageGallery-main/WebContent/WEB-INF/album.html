@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" media="all" href="/css/IndexStyle.css" th:href="@{/css/IndexStyle.css}"/>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.image {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 150px;
+}
+
+.image:hover {
+  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}
+table, th, td {
+  border:1px solid black;
+}
+.active{
+ height: 780px;
+ width: auto;
+}
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<title th:text="${album.title}">Motori </title> 
+</head>
+<body>	
+<h2><a href="#" th:href="@{/Logout}"> Logout</a></h2>
+<h2><a href="#" th:href="@{/GoToHome}"> Home page</a></h2>
+<h1 th:text="${album.title}" >Motori</h1>
+
+<div th:if="${images == null || images.size() == 0}">
+			<h2>No Image to show </h2>
+			<h2>The album is empty </h2>
+	</div>	
+		<div th:if="${images != null && images.size() > 0}">		
+		<table class="center">
+                <tr>
+                <td th:each="i : ${images}">
+                <a href="#" th:href="@{/GoToAlbum(album=${album.id}, image=${i.id})}">
+                	<p th:text=${i.title}> Title</p> 
+                    <img class="image" src="../img/motori/500.jpeg" th:src="@{'/img/' + ${i.path}}" alt="Fiat 500" th:alt="${i.title}"/>
+                    </a>
+                </td>
+         </tr>
+		</table>
+		</div>	
+		
+		<div >
+			<a th:if="${prev != null}" href="#" th:href="@{/GoToAlbum(album=${album.id}, image=${prev.id})}" class="animation underline reverse">PRECEDENTI</a>
+			<a th:if="${next != null}" href="#" th:href="@{/GoToAlbum(album=${album.id}, image=${next.id})}" class="animation underline">SUCCESSIVE</a>
+		</div>
+		
+		<div th:if="${active != null}">
+		<h2 th:text="${active.title}">500</h2>
+		<img class="active" src="../img/motori/500.jpeg" th:src="@{'/img/' + ${active.path}}" alt="500" th:alt="${active.title}"/>
+		<h4 th:text="${active.date}">1998-10-10</h4>
+		<p th:text="${active.description}">The best car of the world</p>
+
+		<h2 th:if="${comments != null && comments.size() > 0}" class="heading_center">Comments</h2>
+
+		<div th:if="${comments != null && comments.size() > 0}" th:remove="all-but-first">
+			<div th:each="c : ${comments}" class="comment" style="border:solid; background-color: rgba(39, 142, 245, 0.52)">
+				<h3 th:text="${c.username}">Anonymous</h3>
+				<p th:text="${c.text}" class="italic">Wow! Quanti ricordi</p>
+			</div>			
+			<div class="comment">
+				<h3>Fernando</h3>
+				<p class="italic">Un carrarmato.</p>
+			</div>			
+		</div>
+
+		<h2 >Create new comment:</h2>
+
+		<div class="form" style="border:solid; background-color: rgba(39, 142, 245, 0.52)">
+			<form action="#" th:action="@{/AddComment}" method="post">
+				<textarea name="text" placeholder="Your comment..." required></textarea>
+				<input name="image" type="hidden" th:value="${active.getId()}"/>
+				<input name="album" type="hidden" th:value="${album.getId()}"/>
+				<button type="submit">Send</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
+

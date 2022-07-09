@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Home Page</title>
+<link rel="stylesheet" type="text/css" media="all" href="/css/HomeStyle.css" th:href="@{/css/HomeStyle.css}"/>
+</head>
+<body>	
+<h2><a href="#" th:href="@{/Logout}"> Logout</a></h2>
+<h1 th:text="|${session.user.getUser()}'s Home|">Mario's Home</h1>
+<h2 th:text="${alert}">  </h2>
+
+
+<div class="parent">
+
+<div class="div1">
+	<h1>Your albums</h1>
+	<div th:if="${myAlbums.size() == 0}" >
+		<p>Non ci sono album da visualizzare</p>
+	</div>
+	<div th:if="${myAlbums.size() > 0}" class="container full" style="border:thin ">
+		
+		<div th:remove="all-but-first" class="two columns">
+			<div th:each="a : ${myAlbums}" class="album" style="border:solid; background-color: rgba(39, 142, 245, 0.52)">
+				<div>
+					<a href="#" th:href="@{/GoToAlbum(album = ${a.id})}">
+					<h3 th:text="'Date: ' + ${a.date} ">Date: 1999-07-17</h3>
+					<h3 th:text="'Title: ' +  ${a.title}">Title: Vacanze al mare</h3>
+					</a>
+				</div>
+					
+			</div>
+					
+				<div>
+					<a href="#" ><h3>1998-07-17 Vacanze al mare</h3></a>
+				</div>
+			
+				<div>
+					<a href="#" ><h3>1997-07-17 Vacanze al mare</h3></a>
+				</div>
+			
+			
+				<div>
+					<a href="#" ><h3>1996-07-17 Vacanze al mare</h3></a>
+				</div>
+			
+			
+				<div>
+					<a href="#" ><h3>1995-07-17 Vacanze al mare</h3></a>
+				</div>
+			
+			
+				<div>
+					<a href="#" ><h3>1994-07-17 Vacanze al mare</h3></a>
+				</div>
+			
+			
+				<div>
+					<a href="#" ><h3>1993-07-17 Vacanze al mare</h3></a>
+				</div>
+			
+		</div>
+		</div>
+</div>
+<div class="div2"> <h1>The albums of other users</h1>
+	<div th:if="${othersAlbums.size() == 0}" >
+		<p>Non ci sono album da visualizzare</p>
+	</div>
+	<div th:if="${othersAlbums.size() > 0}" class="container full" style="border:thin">
+		
+		<div th:remove="all-but-first" class="two columns">
+			<div th:each="a : ${othersAlbums}" class="album" style="border:solid; background-color: rgba(39, 142, 245, 0.52)">
+				<div>
+					<a href="#" th:href="@{/GoToAlbum(album = ${a.id})}">
+					<h3 th:text="'Author: ' + ${a.creator} ">Author: Mario</h3>
+					<h3 th:text="'Date: ' +  ${a.date} ">Date: 1999-07-17 e</h3>
+					<h3 th:text="'Title: ' + ${a.title}">Title: Vacanze al mare</h3>
+					</a>
+				</div>
+			</div>
+			<div>
+					<a href="#" ><h3>1998-07-17 Vacanze al mare</h3></a>
+			</div>
+			
+			<div>
+					<a href="#" ><h3>1997-07-17 Vacanze al mare</h3></a>
+			</div>
+			
+			
+			<div>
+					<a href="#" ><h3>1996-07-17 Vacanze al mare</h3></a>
+			</div>
+			
+			
+			<div>
+					<a href="#" ><h3>1995-07-17 Vacanze al mare</h3></a>
+			</div>
+			
+			
+			<div>
+					<a href="#" ><h3>1994-07-17 Vacanze al mare</h3></a>
+			</div>
+			
+			
+			<div>
+					<a href="#" ><h3>1993-07-17 Vacanze al mare</h3></a>
+			</div>
+		</div>
+		</div>
+</div>
+<div class="div3"> 
+<div >
+	<h1>Create new album</h1>
+		<form action="CreateNewAlbum" method="POST">
+			<label for="title">Title: </label>
+			<br>
+			<input class="form_field" type="text" name="title" required>
+			<br>
+			<label for="date">Date:</label>
+			<br>
+			<input class="form_field" type="date" name="date" required>
+			<br>
+			<input id="button" type="submit" value="Create">
+		</form>
+	</div>
+</div>
+<div class="div4"> 
+
+<h1>Upload new image</h1>
+<form action="UploadNewImage" method="POST" enctype="multipart/form-data">
+			<label for="imagetitle">Title: </label>
+			<br>
+			<input class="form_field" type="text" name="imagetitle" required>
+			<br>
+			<label for="imagedescription">Description: </label>
+			<br>
+			<input class="form_field" type="text" name="imagedescription" required>
+			<br>
+			<label for="imagedate">Date:</label>
+			<br>
+			<input class="form_field" type="date" name="imagedate" required>
+			<br>
+			<input type="file" id="image" name="image">
+			<br>
+			<input type="submit" value="Add Image">
+		</form>
+</div>
+<div class="div5">
+<h1>Add image to an existent album</h1>
+
+<form action="AddImageToAlbum" method="POST">
+<fieldset>
+        <legend>Your images</legend>
+        <ul>
+            <li th:each="image : ${myImages}">
+           		<input th:type="radio" th:name="image" th:value="${image.getId}" />
+            	<label th:for="${image.getId}" th:text="${image.getTitle}"></label>
+            </li>
+        </ul>
+        <legend>Your albums</legend>
+        <ul>
+            <li th:each="album : ${myAlbums}">
+           		<input th:type="radio" th:name="album" th:value="${album.getId}" />
+            	<label th:for="${album.getId}" th:text="${album.getTitle}"></label>
+            </li>
+        </ul>
+        <input type="submit" value="Submit">
+    </fieldset>
+ </form>
+ </div>
+<div class="div6"> 
+<h1>Remove Album</h1>
+<form action="RemoveAlbum" method="POST">
+<fieldset>
+        <legend>Choose the album to remove</legend>
+        <ul>
+            <li th:each="album : ${myAlbums}">
+           		<input th:type="radio" th:name="album" th:value="${album.getId}" />
+            	<label th:for="${album.getId}" th:text="${album.getTitle}"></label>
+            </li>
+        </ul>
+        <input type="submit" value="Submit">
+    </fieldset>
+ </form>
+</div>
+</div>
+</body>
+</html>

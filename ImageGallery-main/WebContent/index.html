@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" media="all" href="css/IndexStyle.css" th:href="@{css/IndexStyle.css}"/>
+<title>Login page</title>
+</head>
+<body>
+	
+<div class="parent">
+
+<div class="div1">
+	<h1>Image Gallery</h1>
+	<h2 th:text="${alert}"> A place to store your images and share your albums </h2>
+	
+	
+</div>
+
+ 
+<div class="div2" >
+	<form action="CheckLogin" method="POST">
+	<p> Login </p>
+			<label for="username">Username or email:</label>
+			<br>
+			<input class="form_field" type="text" name="identifier" placeholder="Pippo" required>
+			<br>
+			<label for="pwd">Password:</label>
+			<br>
+			<input class="form_field" type="password" name="pwd" placeholder="pippo98" required>
+			<br>
+			<input class="button" id="button1" type="submit" value="Login">
+			
+		</form>
+ </div>
+ 
+<div class="div3">
+	<form action="Registration" method="POST">
+	<p> Register </p>
+			<label for="username">Insert username:</label>
+			<br>
+			<input class="form_field" type="text" name="new_username" placeholder="Pluto" required>
+			<br>
+			<label for="email">Insert email:</label>
+			<br>
+			<!-- Strong email checking is done server side, this regex expression checks only format of type pippo@topolino.pluto -->
+			<input class="form_field" type="text" name="new_email" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" title="Invalid email address" placeholder="pluto@gmail.com" required>
+			<br>
+			<label for="pwd">Insert password:</label>
+			<br>
+			<input class="form_field" type="password" name="new_password" placeholder="Pluto99" required>
+			<br>
+			<label for="pwd">Repeat password:</label>
+			<br>
+			<input class="form_field" type="password" name="new_password_bis" placeholder="Pluto99" required>
+			<br>
+			<input class="button" id="button2" type="submit" value="Register">
+		</form>
+ </div>
+ </div>
+
+</body>
+</html>
